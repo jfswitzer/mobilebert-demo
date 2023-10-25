@@ -1,0 +1,4 @@
+tflite-support
+socketio
+flask
+flask_socketio
