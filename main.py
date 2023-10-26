@@ -2,10 +2,11 @@ import time
 import socketio
 import json
 from tflite_support.task import text
-
+import logging
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, send, emit
 
+logging.basicConfig(filename='berty.log', encoding='utf-8', level=logging.DEBUG)
 class BertQA():
     def __init__(self):
         self.answerer = text.BertQuestionAnswerer.create_from_file('mobilebert.tflite')
@@ -35,10 +36,10 @@ def job_submit():
     start = time.time()
     result = classifier.get_answer(body["question"],text[0])
     end = time.time()
+    answer = result.answers[0].text
     latency=end-start
-    return jsonify(success=True, answer=result,latency=latency)
+    return jsonify(success=True, answer=answer,latency=latency)
 
 
 if __name__ == "__main__":
-    print("HERE")
     socketio.run(app, host='0.0.0.0',allow_unsafe_werkzeug=True,debug=True)
