@@ -36,9 +36,12 @@ def job_submit():
     start = time.time()
     result = classifier.get_answer(body["question"],text[0])
     end = time.time()
-    answer = result.answers[0].text
+    text = result.answers[0].text
+    logit = result.answers[0].pos.logit
+    start = result.answers[0].pos.start
+    end = result.answers[0].pos.end
     latency=end-start
-    return jsonify(success=True, answer=answer,latency=latency)
+    return jsonify(success=True,latency=latency,text=text,start=start,end=end,logit=logit)
 
 
 if __name__ == "__main__":
